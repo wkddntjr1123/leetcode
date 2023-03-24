@@ -1,30 +1,25 @@
 class Solution {
+    var baseIdx = 0
+    var maxLen = 0
+    
     fun longestPalindrome(s: String): String {
-        val resultIdx = mutableListOf(-1, -1)
-        val canExpand = { i: Int, j: Int ->
-            (i-1 >= 0 ) && (j+1 <= s.lastIndex && s[i-1] == s[j+1]) && s[i] == s[j] }
-        
-        for(i in 0 .. s.lastIndex - 1){
-            var (l1, r1) = i to i+1
-            while(canExpand(l1, r1)) {
-                l1--
-                r1++
-            }
-            var (l2, r2) = i to i
-            while(canExpand(l2, r2)) {
-                l2--
-                r2++
-            }
-            if (r1 - l1 >= resultIdx[1] - resultIdx[0] && s[r1] == s[l1]) {
-                resultIdx[1] = r1
-                resultIdx[0] = l1
-            }
-            if (r2 - l2 > resultIdx[1] - resultIdx[0]) {
-                resultIdx[1] = r2
-                resultIdx[0] = l2
-            }
+        if (s.length == 1) return s[0].toString()
+        for (i in 0 .. s.lastIndex) {
+            extend(s, i, i)
+            extend(s, i, i+1)
         }
-        return if(resultIdx[0] != -1) s.substring(resultIdx[0], resultIdx[1] + 1) else s[0].toString()
+        return s.substring(baseIdx, baseIdx + maxLen)
     }
     
+    fun extend(s: String, _i: Int, _j: Int) {
+        var (i, j) = _i to _j
+        while(i >= 0 && j <= s.lastIndex && s[i] == s[j]) {
+            i--
+            j++
+        }
+        if (maxLen < j - i - 1) {
+            baseIdx = i + 1
+            maxLen = j - i - 1
+        }
+    }
 }
