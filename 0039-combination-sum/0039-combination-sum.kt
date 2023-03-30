@@ -1,23 +1,21 @@
 class Solution {
-    private val result = mutableListOf<List<Int>>()
-
     fun combinationSum(candidates: IntArray, target: Int): List<List<Int>> {
-        dfs(candidates, target, 0, 0, ArrayDeque())
-        print(result)
-        return result
-    }
+        val result = mutableListOf<List<Int>>()
+        val nums = ArrayDeque<Int>()
 
-    fun dfs(candidates: IntArray, target: Int, index: Int, sumValue: Int, nums:Deque<Int>) {
-        if(sumValue >= target) {
-            if(sumValue == target) {
+        tailrec fun dfs(i: Int, target: Int){
+            if(target == 0) {
                 result.add(nums.toList())
+                return
             }
-            return
+            if(target < 0 || i > candidates.lastIndex) return
+            for(j in i..candidates.lastIndex){
+                nums.addLast(candidates[j])
+                dfs(j, target - candidates[j])
+                nums.removeLast()
+            }
         }
-        for(i in index..candidates.lastIndex){
-            nums.addLast(candidates[i])
-            dfs(candidates, target, i, sumValue + candidates[i], nums)
-            nums.removeLast()
-        }
+        dfs(0, target)
+        return result
     }
 }
