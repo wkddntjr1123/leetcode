@@ -9,11 +9,10 @@ class Solution {
                 return
             }
             if(target < 0 || i > candidates.lastIndex) return
-            for(j in i..candidates.lastIndex){
-                nums.addLast(candidates[j])
-                dfs(j, target - candidates[j])
-                nums.removeLast()
-            }
+            nums.addLast(candidates[i])
+            dfs(i, target - candidates[i])
+            nums.removeLast()
+            dfs(i+1, target)
         }
         dfs(0, target)
         return result
