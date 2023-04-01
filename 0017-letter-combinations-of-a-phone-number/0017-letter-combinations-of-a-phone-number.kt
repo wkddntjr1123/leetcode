@@ -14,8 +14,7 @@ class Solution {
                 dfs(level + 1, cand + c)            
             }
         }
-        if(digits.length == 0) return result
-        dfs(0, "")
+        if(digits.length != 0) dfs(0, "")
         return result
     }
 }
